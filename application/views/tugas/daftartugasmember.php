@@ -34,6 +34,7 @@
                             <th>Anggota Yang Datang</th>
                             <th>Status</th>
                             <th>Aksi</th>
+                            <th>Foto Bukti</th>
                             <th>Upload Bukti Datang</th>
                         </tr>
                     </thead>
@@ -90,6 +91,20 @@
                                         <button class="btn btn-success" type="submit" disabled>Join</button>
                                         <?php } ?>
                                     </div>
+                                </div>
+                            </td>
+                            <td>
+                                <?php if ($j->foto_bukti) { ?>
+
+                                <div class="text-center">
+                                    <img alt="Belum Upload" style="
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  padding: 5px;
+  width: 50px;
+" src="<?= base_url('assets/img/uploadBukti/') . $j->foto_bukti ?>">
+                                    <?php } else {
+                                    } ?>
                                 </div>
                             </td>
                             <td><?php if ($j->status_id == 1 && $user['role_id'] == 3) { ?>

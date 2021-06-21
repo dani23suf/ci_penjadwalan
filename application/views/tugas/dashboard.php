@@ -78,7 +78,7 @@
     </div>
     <!-- /.container-fluid -->
     <!-- CALENDAR -->
-    <section>
+    <section style="margin-bottom: 5em;">
         <div class="container">
             <div class="row justify-content-center">
                 <div class="col-md-6 text-center mb-5">
