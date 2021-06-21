@@ -73,7 +73,7 @@ class Dashboard_admin_model extends CI_Model
 
     public function DataBarchart($tanggal)
     {
-        $bar = "SELECT tanggal, DAYNAME(tanggal) AS hari, COUNT(*) jumlah_kegiatan 
+        $bar = "SELECT '$tanggal' as tanggal, DAYNAME( '$tanggal' ) AS hari, COUNT( * ) jumlah_kegiatan  
         FROM tbl_jadwal WHERE tanggal = '$tanggal' ";
         return $this->db->query($bar)->result_array();
     }
