@@ -10,7 +10,7 @@
             <?php if ($this->session->flashdata('message')) : ?>
             <?= $this->session->flashdata('message'); ?>
             <?php endif; ?>
-            <a href="" class="btn btn-primary mb-3" data-toggle="modal" data-target="#NewRoleModall">Add New Role
+            <a href="" class="btn btn-primary mb-3" data-toggle="modal" data-target="#modaladdrole">Add New Role
                 Menu</a>
 
             <table class=" table table-hover">
@@ -84,11 +84,11 @@
 
 
 <!-- Modal -->
-<div class="modal fade" id="NewRoleModall" tabindex="-1" aria-labelledby="NewRoleModall" aria-hidden="true">
+<div class="modal fade" id="modaladdrole" tabindex="-1" aria-labelledby="modaladdrole" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="NewRoleModall">Add New Role Menu</h5>
+                <h5 class="modal-title" id="modaladdrole">Add New Role Menu</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>

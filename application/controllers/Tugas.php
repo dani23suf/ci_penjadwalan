@@ -26,12 +26,12 @@ class Tugas extends CI_Controller
         if ($dataBulan) {
             $dataBulan = $dataBulan['0']['Jumlah_bulanan'];
         } else {
-            $dataMinggu = 0;
+            $dataBulan = 0;
         }
         if ($dataTahun) {
             $dataTahun = $dataTahun['0']['Jumlah_tahunan'];
         } else {
-            $dataMinggu = 0;
+            $dataTahun = 0;
         }
         $data['minggu'] = $dataMinggu;
         $data['bulan'] = $dataBulan;

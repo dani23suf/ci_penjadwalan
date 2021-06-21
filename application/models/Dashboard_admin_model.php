@@ -61,4 +61,20 @@ class Dashboard_admin_model extends CI_Model
         )";
         return  $this->db->query($TidakSering)->result_array();
     }
+
+    public function DataHarian()
+    {
+        $harian = "SELECT tanggal,COUNT(*) AS jumlah_harian
+        FROM tbl_jadwal
+        WHERE tanggal=DATE(NOW())
+        GROUP BY tanggal";
+        return $this->db->query($harian)->result_array();
+    }
+
+    public function DataBarchart($tanggal)
+    {
+        $bar = "SELECT tanggal, DAYNAME(tanggal) AS hari, COUNT(*) jumlah_kegiatan 
+        FROM tbl_jadwal WHERE tanggal = '$tanggal' ";
+        return $this->db->query($bar)->result_array();
+    }
 }
