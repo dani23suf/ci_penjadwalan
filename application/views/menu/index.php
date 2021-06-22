@@ -7,7 +7,12 @@
     <div class="row">
         <div class="col-lg-6">
             <?= form_error('menu', '<div class="alert alert-danger" role="alert">', '</div>') ?>
-            <?= $this->session->flashdata('message'); ?>
+            <?php if ($this->session->flashdata('message')) : ?>
+            <div>
+                <?php echo $this->session->flashdata('message'); ?>
+            </div>
+            <?php $this->session->unset_userdata('message'); ?>
+            <?php endif ?>
             <a href="" class="btn btn-primary mb-3" data-toggle="modal" data-target="#NewModal">Add New Menu</a>
 
             <table class=" table table-hover">
@@ -28,7 +33,8 @@
                             <a href="" class="badge badge-success" data-toggle="modal"
                                 data-target="#ModalEdit<?= $m['id']; ?>">edit</a>
                             ||
-                            <a href="" class=" badge badge-danger">deleted</a>
+                            <a href="<?= base_url(); ?>menu/hapusMenu/<?= $m['id']; ?>" class=" badge badge-danger"
+                                onclick="return confirm('Do you want to delete this ?')">deleted</a>
                         </td>
                     </tr>
                     <?php $i++; ?>

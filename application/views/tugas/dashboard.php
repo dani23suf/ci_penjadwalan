@@ -78,16 +78,11 @@
     </div>
     <!-- /.container-fluid -->
     <!-- CALENDAR -->
-    <section style="margin-bottom: 5em;">
-        <div class="container">
-            <div class="row justify-content-center">
-                <div class="col-md-6 text-center mb-5">
-                    <h2 class="heading-section">
-                        <h2>Calendar</h2>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-12">
+    <div class="row">
+
+        <div class="col-xl-6 col-lg-5">
+            <div class="card shadow mb-4">
+                <div class="card-body">
                     <div class="elegant-calencar d-md-flex">
                         <div class="wrap-header d-flex align-items-center">
                             <p id="reset">reset</p>
@@ -102,8 +97,8 @@
                                         class="fa fa-chevron-right"></i></div>
                             </div>
                         </div>
-                        <div class="calendar-wrap">
-                            <table id="calendar">
+                        <div class="calendar-wrap table-responsive">
+                            <table class="table" id="calendar">
                                 <thead>
                                     <tr>
                                         <th>Sun</th>
@@ -177,14 +172,177 @@
                 </div>
             </div>
         </div>
-    </section>
+        <div class="col-xl-6 col-lg-5">
+            <div class="card shadow mb-4 col md-5">
+
+                <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold text-primary">Bar Chart</h6>
+                </div>
+                <div class="card-body">
+                    <div class="chart-bar">
+                        <canvas id="myBarChart"></canvas>
+                    </div>
+                    <hr>
+
+                </div>
+            </div>
+        </div>
+
+    </div>
     <!-- END CALENDAR -->
 
 </div>
+
 <!-- End of Main Content -->
+<script src="<?= base_url('assets/'); ?>js/demo/chart-bar-demo.js"></script>
+<script src="<?= base_url('assets/'); ?>vendor/chart.js/Chart.min.js"></script>
+
 <script src="<?= base_url('assets/'); ?>js/jquery.min.js"></script>
 <script src="<?= base_url('assets/'); ?>js/popper.js"></script>
 <script src="<?= base_url('assets/'); ?>js/bootstrap.min.js"></script>
 <script src="<?= base_url('assets/'); ?>js/main.js"></script>
 <script src="<?= base_url('assets/'); ?>vendor/jquery/jquery.min.js"></script>
 <script src="<?= base_url('assets/'); ?>vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script>
+// Bar Chart Example
+$(document).ready(function() {
+    $.ajax({
+        url: "<?= base_url('tugas/getDay'); ?>",
+        method: "GET",
+        success: function(data) {
+
+
+
+
+            data.forEach(element => {
+
+
+                switch (element[0].hari) {
+                    case 'Monday':
+                        element[0].hari = 'SENIN';
+
+                        break;
+                    case 'Tuesday':
+                        element[0].hari = 'SELASA';
+
+                        break;
+                    case 'Wednesday':
+                        element[0].hari = 'RABU';
+
+                        break;
+                    case 'Thursday':
+                        element[0].hari = 'KAMIS';
+                        break;
+                    case 'Friday':
+                        element[0].hari = 'JUM`AT';
+                        break;
+                    case 'Saturday':
+                        element[0].hari = 'SABTU';
+                        break;
+                    case 'Sunday':
+                        element[0].hari = 'MINGGU';
+                        break;
+
+
+                }
+
+            });
+            var label = [];
+            var value = [];
+            var thick = [];
+            for (var i in data) {
+                label.push(data[i][0].hari);
+                value.push(data[i][0].jumlah_kegiatan);
+                thick.push(parseInt(data[i][0].jumlah_kegiatan));
+            }
+
+            var max = Math.max.apply(Math, thick);
+            var maxx = max * 2
+            var ctx = document.getElementById("myBarChart");
+            var myBarChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: label,
+                    datasets: [{
+                        label: "Total",
+                        backgroundColor: "#4e73df",
+                        hoverBackgroundColor: "#2e59d9",
+                        borderColor: "#4e73df",
+                        data: value,
+                    }],
+                },
+                options: {
+                    maintainAspectRatio: false,
+                    layout: {
+                        padding: {
+                            left: 10,
+                            right: 25,
+                            top: 25,
+                            bottom: 0
+                        }
+                    },
+                    scales: {
+                        xAxes: [{
+                            time: {
+                                unit: 'day'
+                            },
+                            gridLines: {
+                                display: false,
+                                drawBorder: false
+                            },
+                            ticks: {
+                                maxTicksLimit: 6
+                            },
+                            maxBarThickness: 25,
+                        }],
+                        yAxes: [{
+                            ticks: {
+                                min: 0,
+                                max: maxx,
+                                maxTicksLimit: 5,
+                                padding: 10,
+                                // Include a dollar sign in the ticks
+                                callback: function(value, index, values) {
+                                    return number_format(value);
+                                }
+                            },
+                            gridLines: {
+                                color: "rgb(234, 236, 244)",
+                                zeroLineColor: "rgb(234, 236, 244)",
+                                drawBorder: false,
+                                borderDash: [2],
+                                zeroLineBorderDash: [2]
+                            }
+                        }],
+                    },
+                    legend: {
+                        display: false
+                    },
+                    tooltips: {
+                        titleMarginBottom: 10,
+                        titleFontColor: '#6e707e',
+                        titleFontSize: 14,
+                        backgroundColor: "rgb(255,255,255)",
+                        bodyFontColor: "#858796",
+                        borderColor: '#dddfeb',
+                        borderWidth: 1,
+                        xPadding: 15,
+                        yPadding: 15,
+                        displayColors: false,
+                        caretPadding: 10,
+                        callbacks: {
+                            label: function(tooltipItem, chart) {
+                                var datasetLabel = chart.datasets[tooltipItem
+                                    .datasetIndex].label || '';
+                                return datasetLabel + ": " + number_format(
+                                    tooltipItem
+                                    .yLabel);
+                            }
+                        }
+                    },
+                }
+            });
+        }
+    })
+});
+</script>

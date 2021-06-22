@@ -1,3 +1,5 @@
+<link href="<?= base_url('assets/'); ?>css/style.css" rel="stylesheet">
+
 <div class="container-fluid">
 
     <div class="card o-hidden border-0 shadow-lg my-5 col-lg-7 mx-auto">
@@ -23,10 +25,11 @@
                                 <?= form_error('email', '<small class="text-danger pl-3">', '</small>'); ?>
                             </div>
                             <div class="form-group">
-                                <select name="jobdesk" id="jobdesk" class="form-control  ">
-                                    <option selected value="">Select Jobdesk</option>
+                                <select name="jobdesk" id="jobdesk" class="form-control">
+                                    <option value="">Select Jobdesk</option>
                                     <?php foreach ($role as $r) : ?>
-                                    <option value="<?= $r['id']; ?>"><?= $r['role']; ?></option>
+                                    <option class="custom-file-label" value="<?= $r['id']; ?>"><?= $r['role']; ?>
+                                    </option>
                                     <?php endforeach; ?>
                                 </select>
                                 <?= form_error('jobdesk', '<small class="text-danger pl-3">', '</small>'); ?>
@@ -55,3 +58,10 @@
     </div>
 
 </div>
+<script>
+$('.form-controlform-control-user').on('change', function() {
+    let fileName = $(this).val().split('\\').pop();
+    $(this).next('.custom-file-label').addClass("selected").html(fileName);
+
+});
+</script>

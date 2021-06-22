@@ -11,7 +11,12 @@
                 <div class="alert alert-danger" role="alert"><?= validation_errors(); ?></div>
                 <?php endif; ?>
                 <?= form_error('menu', '<div class="alert alert-danger" role="alert">', '</div>') ?>
-                <?= $this->session->flashdata('message'); ?>
+                <?php if ($this->session->flashdata('message')) : ?>
+                <div>
+                    <?php echo $this->session->flashdata('message'); ?>
+                </div>
+                <?php $this->session->unset_userdata('message'); ?>
+                <?php endif ?>
             </div>
             <a href="" class=" btn btn-primary mb-3" data-toggle="modal" data-target="#NewSubModal">Add New
                 Submenu</a>

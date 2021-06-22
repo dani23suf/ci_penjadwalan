@@ -15,7 +15,12 @@
 
     <!-- Page Heading -->
     <h1 class="h3 mb-4 text-gray-800"><?= $title; ?></h1>
-    <?= $this->session->flashdata('message'); ?>
+    <?php if ($this->session->flashdata('message')) : ?>
+    <div>
+        <?php echo $this->session->flashdata('message'); ?>
+    </div>
+    <?php $this->session->unset_userdata('message'); ?>
+    <?php endif ?>
     <a href="" class=" btn btn-primary mb-3" data-toggle="modal" data-target="#NewJadwalModal">Add New Agenda</a>
     <!-- DataTales Example -->
     <div class="card shadow mb-4">

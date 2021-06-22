@@ -32,6 +32,15 @@ class Menu extends CI_Controller
         }
     }
 
+    public function hapusMenu($id)
+    {
+
+        $this->db->where('id', $id);
+        $this->db->delete('user_menu');
+        $this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert">Your Menu has been deleted!</div>');
+        redirect('menu');
+    }
+
     public function editMenu()
     {
 

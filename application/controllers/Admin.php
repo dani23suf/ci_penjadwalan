@@ -74,6 +74,7 @@ class Admin extends CI_Controller
         $date1 = date('Y-m-d');
         $ind_date = 6;
         $HariIni = "";
+        $a = "";
         $tampunghari = array();
         $indextampung = 0;
         for ($i = $ind_date; $i > -1; $i--) {
@@ -84,13 +85,13 @@ class Admin extends CI_Controller
             }
             $dataHarianKebelakang = $this->dashboard->DataBarchart($HariIni);
             $tampunghari[$indextampung] = $dataHarianKebelakang;
+
             $indextampung++;
         }
-        var_dump($tampunghari);
-        // return $this->output
-        //     ->set_content_type('application/json')
-        //     ->set_status_header(200)
-        //     ->set_output(json_encode($tampunghari));
+        return $this->output
+            ->set_content_type('application/json')
+            ->set_status_header(200)
+            ->set_output(json_encode($tampunghari));
     }
 
 
@@ -113,7 +114,7 @@ class Admin extends CI_Controller
     public function addRole()
     {
         $roleName = $this->input->post('rolename');
-
+        var_dump($roleName);
         $data = [
 
             'role' => $roleName

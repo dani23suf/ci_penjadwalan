@@ -273,69 +273,64 @@ $(document).ready(function() {
         method: "GET",
         success: function(data) {
 
-            console.log(data);
-
-
-            let hari = {
-                "SENIN": 0,
-                "SELASA": 0,
-                "RABU": 0,
-                "KAMIS": 0,
-                "JUMAT": 0,
-                "SABTU": 0,
-                "MINGGU": 0
-            };
-
-            // for (i = d.getDate(); i < day;) {
-            //     i++;
-            //     console.log(i);
-            // }
 
 
 
             data.forEach(element => {
 
 
-                switch (element) {
+                switch (element[0].hari) {
                     case 'Monday':
+                        element[0].hari = 'SENIN';
 
-                        hari.SENIN = parseInt(element.jumlah_kegiatan)
                         break;
                     case 'Tuesday':
-                        hari.SELASA = parseInt(element.jumlah_kegiatan)
+                        element[0].hari = 'SELASA';
+
                         break;
                     case 'Wednesday':
-                        hari.RABU = parseInt(element.jumlah_kegiatan)
+                        element[0].hari = 'RABU';
+
                         break;
                     case 'Thursday':
-                        hari.KAMIS = parseInt(element.jumlah_kegiatan)
+                        element[0].hari = 'KAMIS';
                         break;
                     case 'Friday':
-                        hari.JUMAT = parseInt(element.jumlah_kegiatan)
+                        element[0].hari = 'JUM`AT';
                         break;
                     case 'Saturday':
-                        hari.SABTU = parseInt(element.jumlah_kegiatan)
+                        element[0].hari = 'SABTU';
                         break;
                     case 'Sunday':
-                        hari.MINGGU = parseInt(element.jumlah_kegiatan)
+                        element[0].hari = 'MINGGU';
                         break;
 
 
                 }
 
             });
-            console.log(data);
+            var label = [];
+            var value = [];
+            var thick = [];
+            for (var i in data) {
+                label.push(data[i][0].hari);
+                value.push(data[i][0].jumlah_kegiatan);
+                thick.push(parseInt(data[i][0].jumlah_kegiatan));
+            }
+
+            var max = Math.max.apply(Math, thick);
+            var maxx = max * 2
             var ctx = document.getElementById("myBarChart");
             var myBarChart = new Chart(ctx, {
                 type: 'bar',
                 data: {
-                    labels: Object.keys(data),
+                    labels: label,
                     datasets: [{
                         label: "Total",
                         backgroundColor: "#4e73df",
                         hoverBackgroundColor: "#2e59d9",
                         borderColor: "#4e73df",
-                        data: Object.keys(data),
+                        data: value,
                     }],
                 },
                 options: {
@@ -365,8 +360,8 @@ $(document).ready(function() {
                         yAxes: [{
                             ticks: {
                                 min: 0,
-                                max: 100,
-                                maxTicksLimit: 0,
+                                max: maxx,
+                                maxTicksLimit: 5,
                                 padding: 10,
                                 // Include a dollar sign in the ticks
                                 callback: function(value, index, values) {

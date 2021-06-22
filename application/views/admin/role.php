@@ -8,8 +8,11 @@
         <div class="col-lg-6">
             <?= form_error('menu', '<div class="alert alert-danger" role="alert">', '</div>') ?>
             <?php if ($this->session->flashdata('message')) : ?>
-            <?= $this->session->flashdata('message'); ?>
-            <?php endif; ?>
+            <div>
+                <?php echo $this->session->flashdata('message'); ?>
+            </div>
+            <?php $this->session->unset_userdata('message'); ?>
+            <?php endif ?>
             <a href="" class="btn btn-primary mb-3" data-toggle="modal" data-target="#modaladdrole">Add New Role
                 Menu</a>
 
@@ -93,7 +96,7 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <form action="<?php base_url('admin/addRole'); ?>" method="post">
+            <form action="<?= base_url('admin/addRole'); ?>" method="post">
                 <div class="modal-body">
                     <div class="form-group">
                         <input type="text" class="form-control" id="rolename" name="rolename" placeholder="Role Name">

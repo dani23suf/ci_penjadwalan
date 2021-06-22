@@ -44,6 +44,33 @@ class Tugas extends CI_Controller
         $this->load->view('tugas/dashboard', $data);
         $this->load->view('templates/footer');
     }
+    public function getDay()
+    {
+        $this->load->model('Dashboard_admin_model', 'dashboard');
+        $date1 = date('Y-m-d');
+        $ind_date = 6;
+        $HariIni = "";
+        $a = "";
+        $tampunghari = array();
+        $indextampung = 0;
+        for ($i = $ind_date; $i > -1; $i--) {
+            if ($i != 0) {
+                $HariIni = date('Y-m-d', strtotime($date1 . "-$i days"));
+            } else {
+                $HariIni = date('Y-m-d');
+            }
+            $dataHarianKebelakang = $this->dashboard->DataBarchart($HariIni);
+            $tampunghari[$indextampung] = $dataHarianKebelakang;
+
+            $indextampung++;
+        }
+        return $this->output
+            ->set_content_type('application/json')
+            ->set_status_header(200)
+            ->set_output(json_encode($tampunghari));
+    }
+
+
 
     public function daftartugasmember()
     {

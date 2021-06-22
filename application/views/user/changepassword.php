@@ -6,7 +6,12 @@
 
     <div class="row">
         <div class="col-lg-6">
-            <?= $this->session->flashdata('message'); ?>
+            <?php if ($this->session->flashdata('message')) : ?>
+            <div>
+                <?php echo $this->session->flashdata('message'); ?>
+            </div>
+            <?php $this->session->unset_userdata('message'); ?>
+            <?php endif ?>
             <form action="<?= base_url('user/changepassword'); ?> " method="post">
 
                 <div class="form-group">

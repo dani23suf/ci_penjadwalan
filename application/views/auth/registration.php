@@ -1,3 +1,4 @@
+<link href="<?= base_url('assets/'); ?>css/style.css" rel="stylesheet">
 <div class="container">
 
     <div class="card o-hidden border-0 shadow-lg my-5 col-lg-7 mx-auto">

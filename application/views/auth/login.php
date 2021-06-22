@@ -16,8 +16,12 @@
                                     <h1 class="h4 text-gray-900 mb-4">Login Page</h1>
                                 </div>
 
-                                <?= $this->session->flashdata('message'); ?>
-
+                                <?php if ($this->session->flashdata('message')) : ?>
+                                <div>
+                                    <?php echo $this->session->flashdata('message'); ?>
+                                </div>
+                                <?php $this->session->unset_userdata('message'); ?>
+                                <?php endif ?>
                                 <form class="user" method="post" action="<?= base_url('auth');  ?>">
                                     <div class="form-group">
                                         <input type="text" class="form-control form-control-user" id="email"
