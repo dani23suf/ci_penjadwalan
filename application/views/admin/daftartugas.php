@@ -21,19 +21,21 @@
     </div>
     <?php $this->session->unset_userdata('message'); ?>
     <?php endif ?>
-    <a href="" class=" btn btn-primary mb-3" data-toggle="modal" data-target="#NewJadwalModal">Add New Agenda</a>
+    <a href="" class=" btn btn-primary mb-3" data-toggle="modal" data-target="#NewJadwalModal">Tambah Agenda</a>
     <!-- DataTales Example -->
     <div class="card shadow mb-4">
         <div class="card-header py-3">
-            <h6 class="m-0 font-weight-bold text-primary">DataTables Example</h6>
+            <h6 class="m-0 font-weight-bold text-primary">Tabel Daftar Tugas</h6>
         </div>
         <div class="card-body">
             <div class="table-responsive">
                 <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                     <thead>
                         <tr>
+                            <th>No</th>
                             <th>Tanggal</th>
                             <th>Jam</th>
+                            <th>Instansi</th>
                             <th>Agenda</th>
                             <th>Tempat</th>
                             <th>Anggota Yang Datang</th>
@@ -50,8 +52,10 @@
                             $j = (object)$j;
                             ?>
                         <tr>
+                            <td><?= $i; ?></td>
                             <td><?= $j->tanggal ?></td>
                             <td><?= $j->jam; ?></td>
+                            <td><?= $j->nama_instansi; ?></td>
                             <td><?= $j->agenda; ?></td>
                             <td><?= $j->tempat; ?></td>
                             <?php $angka = 0 ?>
@@ -66,8 +70,10 @@
                                 <a href="" class="badge badge-success" data-toggle="modal"
                                     data-target="#NewModal<?= $j->id_jadwal; ?>">Edit
                                     Status</a>
+                                <br>
                                 <a href="" class="badge badge-warning" data-toggle="modal"
                                     data-target="#NewSubModal<?= $j->id_jadwal; ?>">Edit Jadwal</a>
+                                <br>
                                 <a href="<?= base_url(); ?>admin/hapusAgenda/<?= $j->id_jadwal; ?> "
                                     class="badge badge-danger"
                                     onclick="return confirm('Do you want to delete this ?')">Deleted</a>
@@ -121,6 +127,7 @@
 
 
                         <!-- Modal Edit Jadwal -->
+
                         <div class="modal fade" id="NewSubModal<?= $j->id_jadwal; ?>" tabindex="-1"
                             aria-labelledby="NewSubModal" aria-hidden="true">
                             <div class="modal-dialog">
@@ -133,48 +140,51 @@
                                     </div>
 
                                     <form action="<?= base_url('admin/editJadwal'); ?>" method="post">
-
                                         <div class="modal-body">
-                                            <div class="form-group">
-                                                <label for="tempat">Tempat : </label>
-                                                <input type="text" class="form-control" id="tempat" name="tempat"
-                                                    value="<?= $j->tempat; ?>">
-                                            </div>
-                                            <div class="form-group">
-                                                <label for="agenda">Agenda : </label>
-                                                <input type="text" class="form-control" id="agenda" name="agenda"
-                                                    value="<?= $j->agenda ?>">
-                                            </div>
                                             <div class="form-group">
                                                 <label for="tanggal">Tanggal : </label>
                                                 <input type="date" class="form-control" id="tanggal" name="tanggal"
-                                                    value="<?= $j->tanggal ?>">
+                                                    value="<?= $j->tanggal_format ?>">
                                             </div>
                                             <div class="form-group">
                                                 <label for="jam">jam : </label>
                                                 <input type="time" class="form-control" id="jam" name="jam"
                                                     value="<?= $j->jam ?>">
                                             </div>
+
                                             <div class="form-group">
 
-                                                <label for="status_agenda">Status Agenda : </label>
-                                                <select name="status" id="status" class="form-control">
+                                                <label for="instansi">Instansi Agenda : </label>
+                                                <select name="instansi" id="instansi" class="form-control">
 
-                                                    <?php foreach ($status as $s) : ?>
+                                                    <?php foreach ($instansi as $ins) : ?>
 
                                                     <?php
-                                                            echo '<option  value="' . $s['id_status'] . '"';
-                                                            if ($s['id_status'] == $j->status_id) {
+                                                            echo '<option  value="' . $ins['id'] . '"';
+                                                            if ($ins['id'] == $j->id_instansi) {
                                                                 echo 'selected';
                                                             }
 
-                                                            echo '>' . $s['status_name'] . '</option>';
+                                                            echo '>' . $ins['nama_instansi'] . '</option>';
                                                             ?>
                                                     <?php endforeach; ?>
                                                 </select>
 
 
                                             </div>
+
+                                            <div class="form-group">
+                                                <label for="agenda"> Nama Agenda : </label>
+                                                <input type="text" class="form-control" id="agenda" name="agenda"
+                                                    value="<?= $j->agenda ?>">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="tempat">Tempat : </label>
+                                                <input type="text" class="form-control" id="tempat" name="tempat"
+                                                    value="<?= $j->tempat; ?>">
+                                            </div>
+
+
                                         </div>
                                         <div class="modal-footer">
                                             <button type="button" class="btn btn-secondary"
@@ -202,7 +212,7 @@
 
 </div>
 
-<!-- Modal Edit Jadwal -->
+<!-- Modal Tambah Jadwal -->
 <div class="modal fade" id="NewJadwalModal" tabindex="-1" aria-labelledby="NewJadwalModal" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -216,14 +226,6 @@
             <form action="<?= base_url('admin/addJadwal'); ?>" method="post">
 
                 <div class="modal-body">
-                    <div class="form-group">
-                        <label for="tempat">Tempat : </label>
-                        <input type="text" class="form-control" id="tempat" name="tempat" required>
-                    </div>
-                    <div class=" form-group">
-                        <label for="agenda">Agenda : </label>
-                        <input type="text" class="form-control" id="agenda" name="agenda" required>
-                    </div>
                     <div class=" form-group">
                         <label for="tanggal">Tanggal : </label>
                         <input type="date" class="form-control" id="tanggal" name="tanggal" required>
@@ -233,16 +235,32 @@
                         <input type="time" class="form-control" id="jam" name="jam" required>
                     </div>
                     <div class=" form-group">
+                        <label for="instansi">Instansi Agenda : </label>
+                        <select name="instansi" id="instansi" class="form-control" required>
+                            <option value="">Pilih Instansi Agenda</option>
+                            <?php foreach ($instansi as $i) : ?>
+                            <option value="<?= $i['id']; ?>"><?= $i['nama_instansi'] ?></option>
+                            <?php endforeach; ?>
+                        </select>
+                    </div>
+                    <div class=" form-group">
+                        <label for="agenda"> Nama Agenda : </label>
+                        <input type="text" class="form-control" id="agenda" name="agenda" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="tempat">Tempat : </label>
+                        <input type="text" class="form-control" id="tempat" name="tempat" required>
+                    </div>
+                    <div class=" form-group">
 
-                        <label for="status_agenda">Status Agenda : </label>
+                        <label for="status_agenda">Status Jadwal : </label>
 
                         <select name="status" id="status" class="form-control" required>
-                            <option value="">Choose status Agenda</option>
+                            <option value="">Pilih Status Jadwal</option>
                             <?php foreach ($status as $s) : ?>
                             <option value="<?= $s['id_status']; ?>"><?= $s['status_name'] ?></option>
                             <?php endforeach; ?>
                         </select>
-
 
                     </div>
                 </div>
@@ -257,6 +275,9 @@
         </div>
     </div>
 </div>
+
+</div>
+
 <!-- END Modal editJadwal -->
 <!-- Bootstrap core JavaScript-->
 <script src="<?= base_url('assets/'); ?>vendor/jquery/jquery.min.js"></script>
@@ -274,3 +295,17 @@
 
 <!-- Page level custom scripts -->
 <script src="<?= base_url('assets/'); ?>js/demo/datatables-demo.js"></script>
+
+<script>
+$(document).ready(function() {
+    $('#Table').DataTable({
+        "order": [
+            [0, "desc"]
+
+        ]
+    });
+
+
+
+});
+</script>

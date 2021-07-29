@@ -15,6 +15,22 @@ class Datang_model extends CI_Model
         return  $this->db->query($query)->result();
     }
 
+    public function rekap()
+    {
+        $query1 = "SELECT `tbl_anggotadatang`.*,`tbl_jadwal`.`tanggal`,`tbl_user`.`name`,`tbl_user`.`id`,`tbl_jadwal`.`tempat`
+        ,`tbl_jadwal`.`agenda`,`tbl_instansi`.`nama_instansi`
+                FROM `tbl_anggotadatang` 
+                JOIN `user_role` 
+               ON  `tbl_anggotadatang` . `jobdesk` = `user_role`.`id` 
+               JOIN `tbl_user` 
+               ON  `tbl_anggotadatang` . `id_user` = `tbl_user`.`id`
+               JOIN `tbl_jadwal` 
+               ON  `tbl_anggotadatang` . `id_jadwal` = `tbl_jadwal`.`id_jadwal` 
+                  JOIN `tbl_instansi` 
+               ON  `tbl_jadwal` . `id_instansi` = `tbl_instansi`.`id`";
+        return $this->db->query($query1)->result();
+    }
+
     public function tanggal($tanggal)
     {
         //pisahkan tanggal

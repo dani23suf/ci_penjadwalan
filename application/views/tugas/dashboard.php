@@ -23,7 +23,7 @@
                     <div class="row no-gutters align-items-center">
                         <div class="col mr-2">
                             <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
-                                Agenda (weekly)</div>
+                                Total Agenda per Minggu yang di Ikuti</div>
                             <div class="h5 mb-0 font-weight-bold text-gray-800">
                                 <?= $minggu ?>
                             </div>
@@ -41,7 +41,7 @@
                     <div class="row no-gutters align-items-center">
                         <div class="col mr-2">
                             <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
-                                Agenda (monthly)</div>
+                                Total Agenda per Bulan yang di Ikuti</div>
                             <div class="h5 mb-0 font-weight-bold text-gray-800">
                                 <?= $bulan ?>
                             </div>
@@ -59,7 +59,7 @@
                     <div class="row no-gutters align-items-center">
                         <div class="col mr-2">
                             <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
-                                Agenda (yearly)</div>
+                                Total Agenda yang di ikuti per Tahun </div>
                             <div class="h5 mb-0 font-weight-bold text-gray-800">
                                 <?= $tahun ?>
                             </div>
@@ -176,7 +176,7 @@
             <div class="card shadow mb-4 col md-5">
 
                 <div class="card-header py-3">
-                    <h6 class="m-0 font-weight-bold text-primary">Bar Chart</h6>
+                    <h6 class="m-0 font-weight-bold text-primary">Chart Jumlah Jadwal per Hari</h6>
                 </div>
                 <div class="card-body">
                     <div class="chart-bar">
@@ -191,6 +191,7 @@
     </div>
     <!-- END CALENDAR -->
 
+</div>
 </div>
 
 <!-- End of Main Content -->

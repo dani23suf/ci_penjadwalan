@@ -24,7 +24,7 @@
     <!-- DataTales Example -->
     <div class="card shadow mb-4">
         <div class="card-header py-3">
-            <h6 class="m-0 font-weight-bold text-primary">DataTables Example</h6>
+            <h6 class="m-0 font-weight-bold text-primary">Daftar Tugas</h6>
         </div>
 
         <div class="card-body">
@@ -32,8 +32,10 @@
                 <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                     <thead>
                         <tr>
+                            <th>No</th>
                             <th>Tanggal</th>
                             <th>Jam</th>
+                            <th>Instansi</th>
                             <th>Agenda</th>
                             <th>Tempat</th>
                             <th>Anggota Yang Datang</th>
@@ -53,8 +55,10 @@
                             $j = (object)$j;
                             ?>
                         <tr>
+                            <td><?= $i; ?></td>
                             <td><?= $j->tanggal; ?></td>
                             <td><?= $j->jam; ?></td>
+                            <td><?= $j->nama_instansi; ?></td>
                             <td><?= $j->agenda; ?></td>
                             <td><?= $j->tempat; ?></td>
                             <?php $angka = 0 ?>
@@ -113,11 +117,11 @@
                                 </div>
                             </td>
                             <td><?php if ($j->status_id == 1 && $user['role_id'] == 3) { ?>
-                                <button class="btn btn-primary" data-toggle="modal"
+                                <button class="btn btn-primary btn-sm" data-toggle="modal"
                                     data-target="#ModalEdit<?= $j->id_jadwal; ?>">Upload
                                     Bukti</button>
                                 <?php } else { ?>
-                                <button class="btn btn-primary" disabled data-toggle="modal"
+                                <button class="btn btn-primary btn-sm" disabled data-toggle="modal"
                                     data-target="#ModalEdit<?= $j->id_jadwal; ?>">Upload
                                     Bukti</button>
                                 <?php } ?>
@@ -181,6 +185,8 @@
 
 </div>
 
+</div>
+
 <!-- Bootstrap core JavaScript-->
 <script src="<?= base_url('assets/'); ?>vendor/jquery/jquery.min.js"></script>
 <script src="<?= base_url('assets/'); ?>vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
@@ -197,6 +203,13 @@
 
 <!-- Page level custom scripts -->
 <script src="<?= base_url('assets/'); ?>js/demo/datatables-demo.js"></script>
+
+<!-- dropdown info topbar logout -->
+
+<script src="<?= base_url('assets/'); ?>js/jquery.min.js"></script>
+<script src="<?= base_url('assets/'); ?>js/popper.js"></script>
+<script src="<?= base_url('assets/'); ?>js/bootstrap.min.js"></script>
+
 
 <script>
 function join(id) {
@@ -236,4 +249,20 @@ function batal_join(id) {
         }
     })
 };
+
+$(document).ready(function() {
+    $('#Table').DataTable({
+        "order": [
+            [0, "desc"],
+            [1, "desc"],
+            [2, "desc"],
+            [3, "desc"],
+            [4, "desc"],
+            [5, "desc"]
+        ]
+    });
+
+
+
+});
 </script>

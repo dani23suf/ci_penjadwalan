@@ -92,6 +92,8 @@ class Tugas extends CI_Controller
             $array_tampil_tugas[$ind]['id_jadwal'] = $row->id_jadwal;
             $array_tampil_tugas[$ind]['tanggal'] = $this->datang->tanggal(explode('-',  $row->tanggal));
             $array_tampil_tugas[$ind]['jam'] = $row->jam;
+            $array_tampil_tugas[$ind]['nama_instansi'] = $row->nama_instansi;
+            $array_tampil_tugas[$ind]['id_instansi'] = $row->id_instansi;
             $array_tampil_tugas[$ind]['tempat'] = $row->tempat;
             $array_tampil_tugas[$ind]['agenda'] = $row->agenda;
             $array_tampil_tugas[$ind]['status_name'] = $row->status_name;

@@ -13,51 +13,56 @@
             </div>
             <?php $this->session->unset_userdata('message'); ?>
             <?php endif ?>
-            <a href="" class="btn btn-primary mb-3" data-toggle="modal" data-target="#NewModal">Add New Menu</a>
+            <a href="" class="btn btn-primary mb-3" data-toggle="modal" data-target="#modaladdinstansi">Tambah Instansi
+                Baru
+            </a>
 
             <table class=" table table-hover">
                 <thead>
                     <tr>
                         <th scope="col">#</th>
-                        <th scope="col">Menu</th>
+                        <th scope="col">Instansi</th>
                         <th scope="col">Action</th>
                     </tr>
                 </thead>
                 <tbody>
                     <?php $i = 1; ?>
-                    <?php foreach ($menu as $m) :  ?>
+                    <?php foreach ($instansi as $ins) :  ?>
                     <tr>
                         <th scope="row"><?= $i; ?></th>
-                        <td><?= $m['menu']; ?></td>
+                        <td><?= $ins['nama_instansi']; ?></td>
                         <td>
+
                             <a href="" class="badge badge-success" data-toggle="modal"
-                                data-target="#ModalEdit<?= $m['id']; ?>">edit</a>
-                            ||
-                            <a href="<?= base_url(); ?>menu/hapusMenu/<?= $m['id']; ?>" class=" badge badge-danger"
-                                onclick="return confirm('Do you want to delete this ?')">deleted</a>
+                                data-target="#NewEditInstansi<?= $ins['id']; ?>">edit</a> ||
+                            <a href="<?= base_url(); ?>admin/hapusInstansi/<?= $ins['id']; ?> " class=" badge
+                                badge-danger" onclick="return confirm('Do you want to delete this ?')">deleted</a>
                         </td>
                     </tr>
                     <?php $i++; ?>
-                    <!-- Modal Edit -->
-                    <div class="modal fade" id="ModalEdit<?= $m['id']; ?>" tabindex="-1" aria-labelledby="ModalEdit"
-                        aria-hidden="true">
+                    <!-- Modal Edit Status-->
+                    <div class="modal fade" id="NewEditInstansi<?= $ins['id']; ?>" tabindex="-1"
+                        aria-labelledby="NewEditInstansi" aria-hidden="true">
                         <div class="modal-dialog">
                             <div class="modal-content">
                                 <div class="modal-header">
-                                    <h5 class="modal-title" id="ModalEdit">Edit Menu</h5>
+                                    <h5 class="modal-title" id="NewEditInstansi">Edit Instansi</h5>
                                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                         <span aria-hidden="true">&times;</span>
                                     </button>
                                 </div>
-                                <form action="<?= base_url('menu/editMenu'); ?>" method="post">
+                                <form action="<?= base_url('admin/editInstansi'); ?>" method="post">
                                     <div class="modal-body">
                                         <div class="form-group">
-                                            <input type="text" class="form-control" id="menu" name="menu"
-                                                value="<?= $m['menu']; ?> ">
-                                            <input type="hidden" id="id" name="id" value="<?= $m['id']; ?> ">
+                                            <input type="text" class="form-control" name="nama_instansi"
+                                                id="nama_instansi" value="<?= $ins['nama_instansi']; ?>">
+                                            </select>
+
                                         </div>
                                     </div>
                                     <div class="modal-footer">
+                                        <input type="hidden" class="form-control" value="<?= $ins['id'] ?>" id="id"
+                                            name="id">
                                         <button type="button" class="btn btn-secondary"
                                             data-dismiss="modal">Close</button>
                                         <button type="submit" class="btn btn-primary">Edit</button>
@@ -66,7 +71,6 @@
                             </div>
                         </div>
                     </div>
-
                     <?php endforeach; ?>
                 </tbody>
             </table>
@@ -83,19 +87,20 @@
 
 
 <!-- Modal -->
-<div class="modal fade" id="NewModal" tabindex="-1" aria-labelledby="NewModal" aria-hidden="true">
+<div class="modal fade" id="modaladdinstansi" tabindex="-1" aria-labelledby="modaladdinstansi" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="NewModal">Add New Menu</h5>
+                <h5 class="modal-title" id="modaladdinstansi">Tambah Instansi</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <form action="<?php base_url('menu'); ?>" method="post">
+            <form action="<?= base_url('admin/addInstansi'); ?>" method="post">
                 <div class="modal-body">
                     <div class="form-group">
-                        <input type="text" class="form-control" id="menu" name="menu" placeholder="Menu name">
+                        <input type="text" class="form-control" id="instansi" name="instansi"
+                            placeholder="Nama Instansi">
                     </div>
                 </div>
                 <div class="modal-footer">

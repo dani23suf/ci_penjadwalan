@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 21, 2021 at 04:25 AM
+-- Generation Time: Jul 29, 2021 at 08:29 AM
 -- Server version: 10.4.17-MariaDB
 -- PHP Version: 8.0.2
 
@@ -18,7 +18,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `ci_penjadwalan`
+-- Database: `penjadwalan_kmf`
 --
 
 -- --------------------------------------------------------
@@ -39,11 +39,38 @@ CREATE TABLE `tbl_anggotadatang` (
 --
 
 INSERT INTO `tbl_anggotadatang` (`id_anggotadatang`, `id_user`, `id_jadwal`, `jobdesk`) VALUES
-(102, 6, 9, 4),
-(103, 4, 9, 2),
-(104, 5, 9, 3),
-(122, 6, 11, 4),
-(124, 6, 10, 4);
+(165, 8, 35, 3),
+(166, 9, 35, 2),
+(167, 8, 36, 3),
+(168, 9, 36, 2),
+(169, 8, 37, 3),
+(170, 9, 37, 2);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `tbl_instansi`
+--
+
+CREATE TABLE `tbl_instansi` (
+  `id` int(11) NOT NULL,
+  `nama_instansi` varchar(100) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `tbl_instansi`
+--
+
+INSERT INTO `tbl_instansi` (`id`, `nama_instansi`) VALUES
+(1, 'Walikota'),
+(2, 'Wakil Wali'),
+(3, 'Ibu Walikota'),
+(4, 'Sekretariat Daerah'),
+(5, 'Sekretariat DPRD'),
+(6, 'Inspektorat Daerah'),
+(7, 'Dinas Daerah'),
+(8, 'Badan Daerah'),
+(9, 'Kecamatan');
 
 -- --------------------------------------------------------
 
@@ -56,6 +83,7 @@ CREATE TABLE `tbl_jadwal` (
   `tanggal` date NOT NULL,
   `jam` time NOT NULL,
   `tempat` varchar(128) NOT NULL,
+  `id_instansi` int(11) NOT NULL,
   `agenda` varchar(128) NOT NULL,
   `status_id` int(11) NOT NULL,
   `foto_bukti` varchar(128) DEFAULT NULL
@@ -65,11 +93,10 @@ CREATE TABLE `tbl_jadwal` (
 -- Dumping data for table `tbl_jadwal`
 --
 
-INSERT INTO `tbl_jadwal` (`id_jadwal`, `tanggal`, `jam`, `tempat`, `agenda`, `status_id`, `foto_bukti`) VALUES
-(9, '2021-06-18', '08:56:00', 'surabaya', 'rapat penting', 3, 'foto-min3.jpg'),
-(10, '2021-06-15', '10:00:00', 'Sidoarjo', 'Dokumentasi acara', 1, NULL),
-(11, '2021-06-14', '14:49:00', 'Malang', 'rapat penting', 1, NULL),
-(12, '2021-06-11', '19:15:59', 'Surabaya', 'mmmm', 1, NULL);
+INSERT INTO `tbl_jadwal` (`id_jadwal`, `tanggal`, `jam`, `tempat`, `id_instansi`, `agenda`, `status_id`, `foto_bukti`) VALUES
+(35, '2021-07-28', '18:55:00', 'Balaikota', 1, 'rapat penting', 1, NULL),
+(36, '2021-07-28', '23:56:00', 'surabaya', 4, 'Mempublis ', 1, NULL),
+(37, '2021-08-01', '11:54:00', 'Balaikota', 8, 'rapat', 1, NULL);
 
 -- --------------------------------------------------------
 
@@ -114,10 +141,8 @@ CREATE TABLE `tbl_user` (
 
 INSERT INTO `tbl_user` (`id`, `name`, `email`, `image`, `password`, `role_id`, `is_active`, `date_created`) VALUES
 (2, 'Dani Sufianto', 'danisufianto5@gmail.com', 'foto-min.jpg', '$2y$10$bOnKWrQVximPbuLuLqi.SuMsqpiewKz0n0eyXHGxESlqFvGLbVuya', 1, 1, 1623038536),
-(3, 'dodyfirdaus', 'dodyfirdaus@gmail.com', 'default.jpg', '$2y$10$8hx652.Nc7PN2gSgUw.vaeFFMnUwTAjpwDu/uwvbYE0rGZHa6i7oa', 2, 1, 1623049516),
-(4, 'Bambang', 'bambang@gmail.com', 'default.jpg', '$2y$10$zv3jcR.WwoIjjvdxxalYqe7jSblWSKyKnKBHfsfCpEIFBs1y8tzfG', 2, 1, 1623378695),
-(5, 'Alex', 'alex@gmail.com', 'default.jpg', '$2y$10$AfuqHsO9otj6B0XtYzlp4eZK7ysTp3gvktYAVS6Fk.bGQivH.3xuu', 3, 1, 1623379194),
-(6, 'budi', 'budi@gmail.com', 'default.jpg', '$2y$10$u51IOQR6oVtx8YyqTX0Nc.d13L6njL1pyGndmXmYQoKKNEwfdyL.O', 4, 1, 1623381612);
+(8, 'Yanuar Satria Putra', 'yanuar@gmail.com', 'default.jpg', '$2y$10$x7viWMYwAY2DomFi7rSvXuNz2Fh3YBdm.QH4eo6WJA1mKuaLTyLn2', 3, 1, 1627357243),
+(9, 'Rijal', 'rijal@gmail.com', 'default.jpg', '$2y$10$qthYSHG1W17DWwuDFD5QgOfVlAo3lBaRwlx/a/syqbg5VdhhCqJiq', 2, 1, 1627357540);
 
 -- --------------------------------------------------------
 
@@ -165,8 +190,7 @@ INSERT INTO `user_menu` (`id`, `menu`) VALUES
 (1, 'Admin'),
 (2, 'Tugas'),
 (3, 'Menu'),
-(7, 'User'),
-(10, 'User2');
+(7, 'User');
 
 -- --------------------------------------------------------
 
@@ -219,7 +243,9 @@ INSERT INTO `user_sub_menu` (`id`, `menu_id`, `title`, `url`, `icon`, `is_active
 (10, 2, 'Dashboard', 'tugas/dashboard', 'fas fa-fw fa-tachometer-alt', 1),
 (11, 1, 'Daftar Tugas', 'admin/daftartugas', 'fas fa-fw fa-folder-open', 1),
 (12, 2, 'Daftar Tugas', 'tugas/daftartugasmember', 'fas fa-fw fa-folder-open', 1),
-(13, 1, 'Tambah Anggota', 'admin/tambahanggota', 'fas fa-fw fa-user-tie', 1);
+(13, 1, 'Tambah Anggota', 'admin/tambahanggota', 'fas fa-fw fa-user-tie', 1),
+(14, 1, 'Rekapan Data', 'admin/rekapandata', 'fas fa-fw fa-folder-open', 1),
+(15, 1, 'Daftar Intansi', 'admin/instansi', 'fas fa-fw fa-folder-open', 1);
 
 --
 -- Indexes for dumped tables
@@ -230,6 +256,12 @@ INSERT INTO `user_sub_menu` (`id`, `menu_id`, `title`, `url`, `icon`, `is_active
 --
 ALTER TABLE `tbl_anggotadatang`
   ADD PRIMARY KEY (`id_anggotadatang`);
+
+--
+-- Indexes for table `tbl_instansi`
+--
+ALTER TABLE `tbl_instansi`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `tbl_jadwal`
@@ -281,13 +313,19 @@ ALTER TABLE `user_sub_menu`
 -- AUTO_INCREMENT for table `tbl_anggotadatang`
 --
 ALTER TABLE `tbl_anggotadatang`
-  MODIFY `id_anggotadatang` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=126;
+  MODIFY `id_anggotadatang` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=171;
+
+--
+-- AUTO_INCREMENT for table `tbl_instansi`
+--
+ALTER TABLE `tbl_instansi`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT for table `tbl_jadwal`
 --
 ALTER TABLE `tbl_jadwal`
-  MODIFY `id_jadwal` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `id_jadwal` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=38;
 
 --
 -- AUTO_INCREMENT for table `tbl_status`
@@ -299,7 +337,7 @@ ALTER TABLE `tbl_status`
 -- AUTO_INCREMENT for table `tbl_user`
 --
 ALTER TABLE `tbl_user`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT for table `user_access_menu`
@@ -311,19 +349,19 @@ ALTER TABLE `user_access_menu`
 -- AUTO_INCREMENT for table `user_menu`
 --
 ALTER TABLE `user_menu`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT for table `user_role`
 --
 ALTER TABLE `user_role`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `user_sub_menu`
 --
 ALTER TABLE `user_sub_menu`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

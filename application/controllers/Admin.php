@@ -88,10 +88,68 @@ class Admin extends CI_Controller
 
             $indextampung++;
         }
+
         return $this->output
             ->set_content_type('application/json')
             ->set_status_header(200)
             ->set_output(json_encode($tampunghari));
+    }
+
+    public function getMonth()
+    {
+        $this->load->model('Dashboard_admin_model', 'dashboard');
+        $date1 = date('Y-m-d');
+        $ind_month = 11;
+        $bulanIni = "";
+        $a = "";
+        $tampungbulan = array();
+        $indextampung = 0;
+        for ($i = $ind_month; $i > -1; $i--) {
+            if ($i != 0) {
+                $bulanIni = date('Y-m-d', strtotime($date1 . "-$i months"));
+            } else {
+                $bulanIni = date('Y-m-d');
+            }
+            $dataBulananKebelakang = $this->dashboard->DataBarchartBulan($bulanIni, $date1);
+            $tampungbulan[$indextampung] = $dataBulananKebelakang;
+
+            $indextampung++;
+        }
+
+
+        return $this->output
+            ->set_content_type('application/json')
+            ->set_status_header(200)
+            ->set_output(json_encode($tampungbulan));
+    }
+
+
+    public function getYear()
+    {
+        $this->load->model('Dashboard_admin_model', 'dashboard');
+        $date1 = date('Y-m-d');
+        $ind_month = 5;
+        $tahunIni = "";
+        $a = "";
+        $tampungTahun = array();
+        $indextampung = 0;
+        for ($i = $ind_month; $i > -1; $i--) {
+            if ($i != 0) {
+                $tahunIni = date('Y-m-d', strtotime($date1 . "-$i year"));
+            } else {
+                $tahunIni = date('Y-m-d');
+            }
+            $dataTahunanKebelakang = $this->dashboard->DataBarchartTahun($tahunIni);
+            $tampungTahun[$indextampung] = $dataTahunanKebelakang;
+
+            $indextampung++;
+        }
+
+
+        return $this->output
+            ->set_content_type('application/json')
+            ->set_status_header(200)
+            ->set_output(json_encode($tampungTahun));
     }
 
 
@@ -200,6 +258,7 @@ class Admin extends CI_Controller
         $this->load->model('Datang_model', 'datang');
         $data['user'] = $this->db->get_where('tbl_user', ['email' => $this->session->userdata('email')])->row_array();
         $data['status'] = $this->db->get_where('tbl_status')->result_array();
+        $data['instansi'] = $this->db->get_where('tbl_instansi')->result_array();
         $data['jad'] = $this->tugas->getDataTugas();
 
         //data tugas
@@ -209,7 +268,10 @@ class Admin extends CI_Controller
         foreach ($tugas as $row) {
             $array_tampil_tugas[$ind]['id_jadwal'] = $row->id_jadwal;
             $array_tampil_tugas[$ind]['tanggal'] =  $this->datang->tanggal(explode('-', $row->tanggal));
+            $array_tampil_tugas[$ind]['tanggal_format'] =  $row->tanggal;
             $array_tampil_tugas[$ind]['jam'] = $row->jam;
+            $array_tampil_tugas[$ind]['nama_instansi'] = $row->nama_instansi;
+            $array_tampil_tugas[$ind]['id_instansi'] = $row->id_instansi;
             $array_tampil_tugas[$ind]['tempat'] = $row->tempat;
             $array_tampil_tugas[$ind]['agenda'] = $row->agenda;
             $array_tampil_tugas[$ind]['status_name'] = $row->status_name;
@@ -263,6 +325,7 @@ class Admin extends CI_Controller
         $status = $this->input->post('status');
         $id  = $this->input->post('id');
         $tempat  = $this->input->post('tempat');
+        $instansi  = $this->input->post('instansi');
         $agenda  = $this->input->post('agenda');
         $tanggal  = $this->input->post('tanggal');
         $jam  = $this->input->post('jam');
@@ -271,15 +334,16 @@ class Admin extends CI_Controller
             'tanggal' => $tanggal,
             'jam' => $jam,
             'tempat' => $tempat,
+            'id_instansi' => $instansi,
             'agenda' => $agenda,
-            'status_agenda' => $status,
+            'status_id' => $status,
             'foto_bukti' => null
         ];
 
         $this->db->set($data);
         $this->db->where('id_jadwal', $id);
         $this->db->update('tbl_jadwal');
-        $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">Your Jadwal has been updated!</div>');
+        $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">Jadwal Berhasil di Update !</div>');
         redirect('admin/daftartugas');
     }
     public function addJadwal()
@@ -288,6 +352,7 @@ class Admin extends CI_Controller
         $status = $this->input->post('status');
 
         $tempat  = $this->input->post('tempat');
+        $instansi  = $this->input->post('instansi');
         $agenda  = $this->input->post('agenda');
         $tanggal  = $this->input->post('tanggal');
         $jam  = $this->input->post('jam');
@@ -297,6 +362,7 @@ class Admin extends CI_Controller
             'tanggal' => $tanggal,
             'jam' => $jam,
             'tempat' => $tempat,
+            'id_instansi' => $instansi,
             'agenda' => $agenda,
             'status_id' => $status,
             'foto_bukti' => null
@@ -353,5 +419,156 @@ class Admin extends CI_Controller
             $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">Congratulation your account has been created. Please Login!</div>');
             redirect('admin/tambahanggota');
         }
+    }
+
+    public function rekapandata()
+    {
+        $data['title'] = 'Rekapan Data';
+        $this->load->model('Tugas_model', 'tugas');
+        $this->load->model('Datang_model', 'datang');
+        $this->load->model('Rekap_model', 'rekap');
+        $data['user'] = $this->db->get_where('tbl_user', ['email' => $this->session->userdata('email')])->row_array();
+
+        $date1 = date('Y-m-d');
+        // $data['rekap'] = $this->rekap->getRekapDataBulan($date1);
+        $tugas = $this->rekap->getRekapDataBulan();
+
+        // $ind_month = date('Y');
+        // $bulanIni = "";
+        // $a = "";
+        // $tampungbulan = array();
+        // $indextampung = 0;
+        // for ($i = $ind_month; $i <= 2017; $i--) {
+        //     if ($i != 0) {
+        //         $bulanIni = date('Y-m-d', strtotime($date1 . "-$i year"));
+        //     } else {
+        //         $bulanIni = date('Y-m-d');
+        //     }
+        //     $dataBulananKebelakang = $this->rekap->getRekapDataBulan($bulanIni);
+        //     $tampungbulan[$indextampung] = $dataBulananKebelakang;
+
+        //     $indextampung++;
+        // }
+
+
+        // $data['anggotadatang'] = $this->output
+        //     ->set_content_type('application/json')
+        //     ->set_status_header(200)
+        //     ->set_output(json_encode($tampungbulan));
+
+
+        //data tugas
+
+        // $tampungbulan = $tampungbulan[$indextampung];
+
+        $data['anggotadatang'] = $tugas;
+        $this->load->view('templates/header', $data);
+        $this->load->view('templates/sidebar', $data);
+        $this->load->view('templates/topbar', $data);
+        $this->load->view('admin/rekapandata', $data);
+        $this->load->view('templates/footer');
+    }
+
+    public function rekapcetak()
+    {
+        $data['title'] = 'Rekapan Data';
+        $this->load->model('Tugas_model', 'tugas');
+        $this->load->model('Datang_model', 'datang');
+        $this->load->model('Rekap_model', 'rekap');
+        $data['user'] = $this->db->get_where('tbl_user', ['email' => $this->session->userdata('email')])->row_array();
+
+        $date1 = date('Y-m-d');
+        // $data['rekap'] = $this->rekap->getRekapDataBulan($date1);
+        $tugas = $this->rekap->getRekapDataBulan();
+
+        // $ind_month = date('Y');
+        // $bulanIni = "";
+        // $a = "";
+        // $tampungbulan = array();
+        // $indextampung = 0;
+        // for ($i = $ind_month; $i <= 2017; $i--) {
+        //     if ($i != 0) {
+        //         $bulanIni = date('Y-m-d', strtotime($date1 . "-$i year"));
+        //     } else {
+        //         $bulanIni = date('Y-m-d');
+        //     }
+        //     $dataBulananKebelakang = $this->rekap->getRekapDataBulan($bulanIni);
+        //     $tampungbulan[$indextampung] = $dataBulananKebelakang;
+
+        //     $indextampung++;
+        // }
+
+
+        // $data['anggotadatang'] = $this->output
+        //     ->set_content_type('application/json')
+        //     ->set_status_header(200)
+        //     ->set_output(json_encode($tampungbulan));
+
+
+        //data tugas
+
+        // $tampungbulan = $tampungbulan[$indextampung];
+
+        $data['anggotadatang'] = $tugas;
+        $this->load->view('templates/header', $data);
+
+
+        $this->load->view('admin/rekapcetak.php', $data);
+    }
+
+    public function instansi()
+    {
+        $data['title'] = 'Instansi';
+        $data['user'] = $this->db->get_where('tbl_user', ['email' => $this->session->userdata('email')])->row_array();
+
+        $data['instansi'] = $this->db->get_where('tbl_instansi')->result_array();
+
+        $this->load->view('templates/header', $data);
+        $this->load->view('templates/sidebar', $data);
+        $this->load->view('templates/topbar', $data);
+        $this->load->view('admin/instansi', $data);
+        $this->load->view('templates/footer');
+    }
+
+    public function editInstansi()
+    {
+        $instansi = $this->input->post('nama_instansi');
+        $id  = $this->input->post('id');
+
+        $data = [
+
+
+            'nama_instansi' => $instansi
+
+        ];
+
+        $this->db->set($data);
+        $this->db->where('id', $id);
+        $this->db->update('tbl_instansi');
+        $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">Data Instansi Telah di Update !</div>');
+        redirect('admin/instansi');
+    }
+
+    public function hapusInstansi($id)
+    {
+
+        $this->db->where('id', $id);
+        $this->db->delete('tbl_instansi');
+        $this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert">Data Instansi berhasil di Hapus !</div>');
+        redirect('admin/instansi');
+    }
+
+    public function addInstansi()
+    {
+        $instansi = $this->input->post('instansi');
+
+        $data = [
+
+            'nama_instansi' => $instansi
+        ];
+
+        $this->db->insert('tbl_instansi', $data);
+        $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">Data Instansi berhasil di Tambahkan !</div>');
+        redirect('admin/instansi');
     }
 }

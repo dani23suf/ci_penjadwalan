@@ -77,4 +77,16 @@ class Dashboard_admin_model extends CI_Model
         FROM tbl_jadwal WHERE tanggal = '$tanggal'  ";
         return $this->db->query($bar)->result_array();
     }
+    public function DataBarchartBulan($bulan, $tanggal)
+    {
+        $bari = "SELECT '$bulan' as tanggal, MONTH('$bulan') AS bulan, COUNT(*) AS jumlah_bulanan
+        FROM tbl_jadwal WHERE MONTH(tanggal) =  MONTH('$bulan') ";
+        return $this->db->query($bari)->result_array();
+    }
+    public function DataBarchartTahun($bulan)
+    {
+        $bari = "SELECT '$bulan' as Tahun, YEAR('$bulan') AS tahun, COUNT(*) AS jumlah_tahunan
+        FROM tbl_jadwal WHERE YEAR(tanggal) =  YEAR('$bulan') ";
+        return $this->db->query($bari)->result_array();
+    }
 }
